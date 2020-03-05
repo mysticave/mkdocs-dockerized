@@ -12,7 +12,7 @@ pipeline {
     } 
     stage('Cloning Git') {
       steps {
-        git 'https://github.com/mysticave/mkdocs.git'
+        git 'https://github.com/mysticave/mkdocs-dockerized.git'
       }
     }
     stage('Building image') {
