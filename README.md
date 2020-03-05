@@ -41,6 +41,6 @@ $2 - the tag of the mkdocs docker image you want to use.
 
 $3 - you can choose between `produce` or `serve`. 
 
-To produce website use: `sh mkdockerize.sh /home/project anilmahapatra/mkdocs:5 produce`
+To produce website use: `sh mkdockerize.sh "/home/project" 5 produce`
 
-To run the website use: `sh mkdockerize.sh /home/project anilmahapatra/mkdocs:5 serve`
+To run the website use: `sh mkdockerize.sh "/home/project" 5 serve`
