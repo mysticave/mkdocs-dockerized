@@ -1,0 +1,52 @@
+pipeline {
+  environment {
+    registry = "anilmahapatra/mkdocs"
+    registryCredential = 'dockerhub'
+    dockerImage = ''
+  }
+  agent any
+  stages {
+    stage('Clean Workspace') {
+        steps{
+            step([$class: 'WsCleanup'])
+        }
+    } 
+    stage('Cloning Git') {
+      steps {
+        git 'https://github.com/mysticave/mkdocs.git'
+      }
+    }
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
+      }
+    }
+    stage('Deploy Image') {
+      steps{
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
+        }
+      }
+    }
+    stage('Remove Unused docker image') {
+      steps{
+        sh "docker rmi $registry:$BUILD_NUMBER"
+      }
+    }
+    stage ('Test Produce') {
+        steps{
+            sh "bash mkdockerize.sh ${WORKSPACE}/project $BUILD_NUMBER produce"
+        }
+    }
+    
+    stage ('Test Serve') {
+        steps{
+            sh "bash mkdockerize.sh ${WORKSPACE}/project $BUILD_NUMBER serve"
+        }
+    }
+  }
+}
