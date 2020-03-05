@@ -2,7 +2,6 @@ pipeline {
   environment {
     registry = "anilmahapatra/mkdocs"
     registryCredential = 'dockerhub'
-    dockerImage = ''
   }
   agent any
   stages {
@@ -45,6 +44,11 @@ pipeline {
     
     stage ('Test Serve') {
         steps{
+            sh label: '', script: '''CONTAINER_NAME="mkdocs"
+                                     OLD="$(docker ps --all --quiet --filter=name="$CONTAINER_NAME")"
+                                     if [ -n "$OLD" ]; then
+                                         docker stop $OLD
+                                     fi'''
             sh "bash mkdockerize.sh ${WORKSPACE}/project $BUILD_NUMBER serve"
         }
     }
