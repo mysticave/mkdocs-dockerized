@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 COPY requirements.txt ./
 
 # Copying entrypoint script to docs folder.
-# COPY entrypoint.sh ./ - will copy the entry point into the container once the entrypoint file is created.
+COPY entrypoint.sh ./
 
 # Installing mkdocs
 RUN pip install --no-cache-dir -r requirements.txt
